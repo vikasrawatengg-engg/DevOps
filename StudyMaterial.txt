@@ -1,0 +1,25 @@
+https://github.com/18jatin/terraform-zero-to-hero
+https://www.geeksforgeeks.org/devops/terraform-cheat-sheet/
+https://github.com/jatinbhalla1991/maybatch2026
+https://github.com/discover-devops?tab=repositories
+
+tools:
+git
+git hub account
+terraform:
+https://developer.hashicorp.com/terraform/install
+
+aws cloud:
+https://aws.amazon.com/console/
+
+visual studio code:
+https://code.visualstudio.com/download
+
+aws cli:
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+install docker desktop: https://docs.docker.com/desktop/setup/install/windows-install/
+account
+
+docker hub account:
+https://hub.docker.com/
