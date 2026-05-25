@@ -1,4 +1,4 @@
-# ==========================================================
+/*# ==========================================================
 # 1. ECR (Elastic Container Registry) - To store Docker Images
 # ==========================================================
 resource "aws_ecr_repository" "docker_repo" {
@@ -52,3 +52,4 @@ resource "aws_eks_cluster" "k8s_cluster" {
 
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
 }
+*/

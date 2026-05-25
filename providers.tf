@@ -8,3 +8,8 @@ backend "s3" {
   key    = "terraform.tfstate"
 }
 }
+# ADD THIS BACK TEMPORARILY SO TERRAFORM CAN REACH OHIO TO DELETE IT
+provider "aws" {
+  region = "us-east-2"
+  alias  = "ohio"
+}

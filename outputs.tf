@@ -1,4 +1,4 @@
-# ==========================================
+/*# ==========================================
 # 4. OUTPUT BLOCKS (Assignment 4)
 # Capturing and displaying infrastructure properties
 # ==========================================
@@ -12,3 +12,9 @@ output "database_arn" {
   description = "The Amazon Resource Name tracking ID of the RDS system"
   value       = aws_db_instance.mysql_db.arn
 }
+
+output "permanent_public_ip" {
+  description = "The unchangeable static public IP address of your web server"
+  value       = aws_eip.web_eip.public_ip
+}
+*/
