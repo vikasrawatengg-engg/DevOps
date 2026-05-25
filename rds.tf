@@ -1,49 +1,41 @@
-# ==========================================
-# 1. DATA BLOCKS (Assignment 3 - Targeted)
-# Fetching your specific active VPC details directly
-# ==========================================
-data "aws_vpc" "custom" {
-  id = "vpc-0c6531873c1c5c774"
-}
-
-# Automatically discovers all subnets tied to your specific VPC
-data "aws_subnets" "custom" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.custom.id]
-  }
-}
-
-# ==========================================
-# 2. RDS SUBNET GROUP
-# Swapped to use your custom subnet IDs discovered above
-# ==========================================
+# ==========================================================
+# 1. RDS SUBNET GROUP (Wired to your Code-Created VPC)
+# ==========================================================
 resource "aws_db_subnet_group" "rds_subnets" {
-  name       = "vikas-rds-subnet-group"
-  subnet_ids = data.aws_subnets.custom.ids
+  name        = "vikas-modular-rds-subnet-group"
+  description = "Database subnet group using my code-created modular subnets"
+  
+  # Grabbing both subnets directly from your network module layer outputs
+  subnet_ids  = [
+    module.my_vpc_layer.subnet_id,  # Points to public_subnet in ap-south-1a
+    module.my_vpc_layer.subnet_id_b # Points to public_subnet_b in ap-south-1b
+  ]
 
   tags = {
-    Name = "My Custom RDS Subnet Group"
+    Name        = "Vikas-Modular-RDS-Subnet-Group"
+    Environment = "Dev"
   }
 }
 
-# ==========================================
-# 3. RDS DATABASE INSTANCE (Assignment 2)
-# ==========================================
+# ==========================================================
+# 2. RDS DATABASE INSTANCE
+# ==========================================================
 resource "aws_db_instance" "mysql_db" {
-  allocated_storage    = 20                     
-  engine               = "mysql"                
-  engine_version       = "8.0"                  
-  instance_class       = "db.t4g.micro"         # Cost-effective choice
-  db_name              = "my_beginner_db"       
-  username             = "admin"                
-  password             = "SuperSecurePass123!"  
+  allocated_storage    = 20
+  engine               = "mysql"
+  engine_version       = "8.0"
+  instance_class       = "db.t4g.micro" # Cost-effective Graviton instance
+  db_name              = "my_modular_db"
+  username             = "admin"
+  password             = "SuperSecurePass123!" # Replace with an environment variable later
+  
+  # Attaching the subnet group we created right above
   db_subnet_group_name = aws_db_subnet_group.rds_subnets.name
-  skip_final_snapshot  = true                   
-  publicly_accessible  = false                  
+  skip_final_snapshot  = true
+  publicly_accessible  = false
 
   tags = {
-    Name        = "Vikas-MySQL-Server"
+    Name        = "Vikas-Modular-MySQL-Server"
     Environment = "Dev"
   }
 }

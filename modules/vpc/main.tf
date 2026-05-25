@@ -6,7 +6,7 @@ resource "aws_vpc" "custom_network" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "vikas-modular-vpc"
+    Name = "vikas-default-vpc"
   }
 }
 
