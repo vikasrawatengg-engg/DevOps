@@ -1,4 +1,4 @@
-https://github.com/jatinbhalla1991/maybatch2026/blob/main/assignment.txt
+https://github.com/jatinbhalla1991/maybatch2026/blob/main/assignment.txtx
 terraform
 21st may
 assignment1: run terraform code and try to store your backend configuration on s3 bucket
