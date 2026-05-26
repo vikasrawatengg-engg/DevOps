@@ -1,31 +1,17 @@
-$yaml = @(
-"name: Create Directory and File Workflow",
-"",
-"on:",
-"  push:",
-"    branches:",
-"      - main",
-"",
-"jobs:",
-"  build:",
-"    runs-on: ubuntu-latest",
-"    steps:",
-"      - name: Checkout Repository",
-"        uses: actions/checkout@v4",
-"",
-"      - name: Create Directory and File",
-"        run: |",
-"          mkdir -p Vikas",
-"          echo 'GitHub Workflow Automation: Completed by Vikas Rawat.' > Vikas/task_workflow.txt",
-"",
-"      - name: Commit and Push Changes",
-"        run: |",
-"          git config --global user.name 'Vikas Rawat'",
-"          git config --global user.email 'vikasrawatengg-engg@example.com'",
-"          git add Vikas/",
-"          git commit -m 'automation: automated directory and file creation via GitHub Actions' || echo 'No changes to commit'",
-"          git push"
-)
+name: Vikas
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-# 4. Flush the array directly to your local file system layout
-Set-Content -Path $path -Value $yaml
+      - name: create a directory
+        run: mkdir Vikas
+       
+
+      - name: create a file
+        run: cd Vikas && touch hello.txt
+        
+         
