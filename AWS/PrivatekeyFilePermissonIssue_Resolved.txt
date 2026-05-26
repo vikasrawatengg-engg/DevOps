@@ -1,0 +1,15 @@
+---------------Windows 11 Powersheell issue----------------------
+Permissions for 'filename.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "filename.pem": bad permissions
+ec2-user@ec2-3-90-214-51.compute-1.amazonaws.com: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS D:\trainingclouddevops> icacls "filename.pem" /reset
+
+PS D:\trainingclouddevops> icacls "filename.pem" /inheritance:r
+
+PS D:\trainingclouddevops> icacls "filename.pem" /grant:r "$($env:USERNAME):R"
+
+PS D:\trainingclouddevops> icacls "vikasnew.pem"
+
+

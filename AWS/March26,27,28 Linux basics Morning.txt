@@ -1,0 +1,248 @@
+------------------------------------------------March -26 Linux Basics----------------------------------
+
+day-->1
+
+1. mkdir --> This command will help us to create a new directory.
+
+ Syntax --> mkdir <directoryName>
+
+ example --> mkdir linMar26
+ example --> mkdir day1
+
+2. ls --> This command will hel us to list/listing all the files as well as directories available.
+ 
+example --> ls
+
+2.1 ls -a --> This comand is similar to ls command but if there is any kind of hidden files of directory
+    then we can use this command and here -a is a flag to list all the files or dir.
+
+
+
+3. cd --> If i want to change my directory so i will be using this command.
+
+ Syntax --> cd <DirectoryName>
+
+ Example --> cd linMar26
+
+3.1 cd .. --> This command will allow us to move back one directory.
+
+ example --> cd ..
+
+3.2 cd ../.. --> This command will allow us to move back 2 directory at the same time.
+
+  example -> If i want to move back 4 directories ? 
+
+   # cd ../../../..  OR cd --> this command will also allow to come back 4 directories
+
+4. touch --> This comand will help us to create an empty file.
+
+ Syntax --> touch <YourFileName>
+
+ example -->touch file2.txt
+
+4.1 touch file3.txt file4.txt file5.txt --> This command will create 3 empty files on the same time.
+
+ Syntax --> touch <fileName1> <FileName2> <FileName3>
+
+ example --> touch 1.txt 2.txt 3.txt 4.txt 5.txt
+
+5. rm --> This command will allow us to delete or remove a file inside the directory.
+
+ syntax --> rm <fileName>
+
+ example --> rm 1
+
+5.1 rm 2 3 --> if we want to delete multile files at the same time so we can use this command.
+
+   syntax --> rm <file1> <file2> 
+
+   example --> rm 2 3
+
+5.2 rm *.txt --> This command will allow us to delete all the txt files on the same time.
+
+   example --> rm *.txt
+
+6. Editors in linux --> nano , vi
+
+6.1 nano --> This is an editor available in linux in order to edit the file,create text based files.
+
+ syntax --> nano <filename>
+
+ example --> nano file3.txt
+
+ how to save and exit from the nano editor -->
+ Ctrl + s  --> To save
+ Ctrl + x  --> To exit
+
+6.2 vi --> This is another type of editor avaliable in linux in ordwer to edit as well as create
+ text based files.
+
+ Note --> once we are inside vi editor we have to go inside the INSERT mode by pressing "i" and once
+  we have added all the data we have to press "Esc" key to come out from the insert mode.
+
+ how to save and exit from vi editor --> :wq here w is to write/save the data and q is to quit from
+ the editor.
+
+ syntax --> vi <fileName>
+
+ example --> vi demo.txt
+
+7. sudo su --> If we want some admin priveledges the we can use this command and we will become a root
+   user. here sudo means "superuser do"
+
+  example --> sudo su
+
+8. cat --> This command will allow us to see the data inside the a particular file.
+
+ Syntax --> cat <fileName>
+
+ Example --> cat file3.txt
+
+9. rmdir --> This command will allow us to remove a directory but this is having some condition that
+  the directory should be empty.
+
+ syntax --> rmdir <directoryName>
+
+ Example --> rmdir LINIX2
+
+----------------------------------------------day-2------------------------------------------
+
+How to delete a directory which is having files inside it ??
+
+10. rm -r -f LINUX --> This command will allow us to delete a directory even if it is having 
+   some files inside it so in that case we can use this command.here -r is for recursive  and it 
+   removes the directory as well as it content and -f flag means forcefully we are deleting 
+   directory without any confirmation.
+
+ Syntax --> rm -rf <DirectoryName>
+
+ example --> rm -rf LINUX.
+
+11. pwd -->  This command will help us to see the present working directory where i am 
+   curently working.
+
+   example --> pwd.
+
+12. echo "hello Everyone" --> This command is having multiples uses and it will return the
+
+   same string. Single and double quotes both will work.
+
+  Syntax --> echo "Your String"
+  Example --> echo "hello Everyone!"
+
+12.1 echo "This is a new text file" > file6.txt --> This command will allow us to either to 
+     create a new file or to edit an exiting/empty file.
+
+   Syntax --> echo "Your String" > <fileName>
+
+13. cp --> This command will help us to copy data from source file to destination file.There 
+    is one limitation of using cp command that the actaul data in the destination is replaced
+     from the source file but it actual data is lost. we are having one alternative using cat
+     command.
+
+    Syntax --> cp <Sourcefile> <DestinationFile>
+
+    Example --> cp newfile1.txt newfile2.txt
+
+13.1 cat newfile1.txt >> newfile3.txt--> Cat cmmand also helps us to append tha data into the destination file without removing
+     the existing data.
+
+    Syntax --> cat <SourceFile> >> <DestinationFile>
+
+14. grep --> This command will allow us to search specific data from an existing file and 
+    it will return the entire data but the data we are searching will be highlighed with some
+    color.
+
+   Syntax --> grep "text you want to search" <fileName>
+   example --> grep "Pattern" pattern.txt
+
+14.1 grep -i "text" pattern.txt --> This command will seach the text but with the help of
+     -i flag it will ignore the case.The full form of grep is global regular expression 
+     print.
+
+    syntax --> grep -i "text" <filename>
+    example --> grep -i "text" pattern.txt
+
+14.2 grep -i -E "This|PATTERN" pattern.txt if we want to search multipl strings at the same time which are not together inside a 
+    file then in that case we will be using pipe operator(|).-E here is for extended regular
+    expressions
+
+15. cal --> This command will show us the calender of the month.
+
+  Syntax --> cal <month> <year>
+  example --> cal 04 2025
+
+15.1 ncal --> This will also show us the calender but in a different format.
+
+    Syntax--> ncal <month> <year>
+    Example --> ncal 10 2022
+
+15.2 ncal -y --> This command will show us the calender for entire/curent year.
+
+  Syntax --> ncal/cal -y <Specificyear>
+  example --> ncal -y 2025  
+
+  
+16. sudo apt update --> When we want to install some package into our linux then firstly we
+   have to updates the packages.here apt is the package manager of linux.
+
+17. vim newfile --> This is another text editor almost identical to your vi editor.
+
+--------------------------------------------------Day-3------------------------------------------------
+
+
+18. ifconfig --> This command will help us to find the Ip address of the linux based OS.
+
+Kali Linux VM IP address --> 192.168.11.128
+
+Windows base Machine IP address -->  192.168.242.1
+
+19 ping --> This command will help us to check the connectivity between two different machines.
+
+   Syntax --> ping <targetmachineIP>
+   example --> ping 192.168.242.1  here i am checking the connectivity from kali linux to windows base 
+    machine.
+
+20 mv --> This command is used to rename a file as well as it will also help us to move a file to a
+   specified location.
+
+  syntax --> mv <SourceFilename> <DestinationFileName>
+
+  example --> mv file1.txt file2.txt
+
+20.1 mv --> mv command is also used to rename an existiing file.
+
+    Syntax --> mv <oldFileName> <NewFileName>
+
+    example --> mv file2.txt newfile2.txt
+
+20.2 mv --> Mv command will help us to move a file from one location to another.
+
+   Syntax --> mv <filename> <path/../>
+
+21 top --> This command will help us to see all the processes running in the background along with its
+   Process ID,CPU usage etc.
+
+22 whoami --> This command will display us we are working as which user or the name of the user.
+
+23 w --> This command will give me some additional info about the user.
+
+24 wget --> This commad will help us to diwnload a file from the internet .
+
+ Syntax --> wget <diwnloadlink>
+
+25. history --> This command will return us all the executed commands on the linux terminal.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

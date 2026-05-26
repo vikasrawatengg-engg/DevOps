@@ -1,0 +1,9 @@
+1. AWS account details for LAB access.
+Email: vikasrawatengg@gmail.com
+Password: Priti@2026@@
+Account ID: 8513-1137-7349
+https://aws.amazon.com/free/compute/
+https://drive.google.com/file/d/11k402TdZfQeAqUwb2MWmRkAFUWnVmT88/view
+
+2. Basic Linux
+Linux: https://killercoda.com/playgrounds/scenario/ubuntu
