@@ -1,35 +1,31 @@
-$workflowContent = @'
-name: Create Directory and File Workflow
+$yaml = @(
+"name: Create Directory and File Workflow",
+"",
+"on:",
+"  push:",
+"    branches:",
+"      - main",
+"",
+"jobs:",
+"  build:",
+"    runs-on: ubuntu-latest",
+"    steps:",
+"      - name: Checkout Repository",
+"        uses: actions/checkout@v4",
+"",
+"      - name: Create Directory and File",
+"        run: |",
+"          mkdir -p Vikas",
+"          echo 'GitHub Workflow Automation: Completed by Vikas Rawat.' > Vikas/task_workflow.txt",
+"",
+"      - name: Commit and Push Changes",
+"        run: |",
+"          git config --global user.name 'Vikas Rawat'",
+"          git config --global user.email 'vikasrawatengg-engg@example.com'",
+"          git add Vikas/",
+"          git commit -m 'automation: automated directory and file creation via GitHub Actions' || echo 'No changes to commit'",
+"          git push"
+)
 
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    # Step 1: Check out your repository code onto the runner
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    # Step 2: Run the shell commands to create the directory and file
-    - name: Create Directory and File
-      run: |
-        mkdir -p Vikas
-        echo "GitHub Workflow Automation: Completed by Vikas Rawat." > Vikas/task_workflow.txt
-
-    # Step 3: Automatically commit and push the new folder back into your repository
-    - name: Commit and Push Changes
-      run: |
-        git config --global user.name "Vikas Rawat"
-        git config --global user.email "vikasrawatengg-engg@example.com"
-        git add Vikas/
-        git commit -m "automation: automated directory and file creation via GitHub Actions workflow" || echo "No changes to commit"
-        git push
-'@
-
-# Write the contents directly into your new workflow path
-Set-Content -Path ".github\workflows\task-workflow.yml" -Value $workflowContent
+# 4. Flush the array directly to your local file system layout
+Set-Content -Path $path -Value $yaml
