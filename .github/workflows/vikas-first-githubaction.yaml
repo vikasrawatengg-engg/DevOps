@@ -28,7 +28,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y terraform
 
       - name: Terraform Init
-        working-directory: ./terraform
+        working-directory: terraform
         run: terraform init
       
       - name: Terraform Plan
