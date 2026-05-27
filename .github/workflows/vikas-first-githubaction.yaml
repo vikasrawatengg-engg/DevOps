@@ -11,9 +11,8 @@ jobs:
       # Step 1: Checkout Repository Code
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      # Step 2: Configure AWS Credentials using Secrets & Variables
-        - name: Configure AWS Credentials
+         # Step 2: Configure AWS Credentials using Secrets & Variables
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
