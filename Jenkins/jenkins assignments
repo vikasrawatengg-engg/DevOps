@@ -1,0 +1,5 @@
+3rd june
+jenkins assignments
+
+create another ec2 instance and try to set that machine as jenkins node
+to verify run the pipeline using that node
