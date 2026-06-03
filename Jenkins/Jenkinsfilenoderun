@@ -1,0 +1,34 @@
+pipeline {
+    // Crucial: Tells Jenkins to route this build to a node carrying your label
+    agent { label 'maven-worker' } 
+
+    stages {
+        stage('Verify Node Context') {
+            steps {
+                echo 'Checking machine identity context...'
+                // Prints the hostname and local network IP to prove it is running on the worker EC2 instance
+                sh 'hostname -I'
+                sh 'uname -a'
+            }
+        }
+
+        stage('Checkout Source') {
+            steps {
+                git url: 'https://github.com/jglick/simple-maven-project-with-tests.git', branch: 'master'
+            }
+        }
+
+        stage('Build & Package') {
+            steps {
+                echo 'Compiling project via Node environment path...'
+                sh 'mvn clean package -DskipTests=true'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+    }
+}
