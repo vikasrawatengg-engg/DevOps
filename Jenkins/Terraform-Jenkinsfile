@@ -7,7 +7,6 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'ap-south-1' 
-        // ⚠️ Verify that this matches the directory folder name containing your .tf files
         TF_DIR = 'Terraform' 
     }
 
@@ -38,14 +37,22 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
+                echo "Initializing backend inside directory: ${TF_DIR}..."
                 dir("${TF_DIR}") {
-                    sh 'terraform init'
+                    // Added credential wrapping here so it can authenticate against your S3 bucket
+                    withCredentials([
+                        string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
+                        sh 'terraform init'
+                    }
                 }
             }
         }
 
         stage('Terraform Plan') {
             steps {
+                echo 'Generating declarative execution plan matrix...'
                 dir("${TF_DIR}") {
                     withCredentials([
                         string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
@@ -59,14 +66,14 @@ pipeline {
 
         stage('Gate: Manual Gate Approval') {
             steps {
-                // Blocks here cleanly waiting for your manual confirmation button click
-                input message: '⚠️ Review the generated Plan matrix. Do you approve deployment?', 
+                input message: '⚠️ Review the generated Terraform Plan. Do you approve deploying these changes to AWS?', 
                       ok: 'Approve & Apply Changes'
             }
         }
 
         stage('Terraform Apply') {
             steps {
+                echo 'Executing plan target blueprint modifications on AWS infrastructure...'
                 dir("${TF_DIR}") {
                     withCredentials([
                         string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
