@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Install Apache
+      dnf:
+        name: httpd
+        state: present
+        update_cache: yes
+
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
