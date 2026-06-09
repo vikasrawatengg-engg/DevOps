@@ -1,0 +1,9 @@
+---
+  - name: send copy.html file to webservers
+    copy:
+      src: copy.html
+      dest: /var/www/html/copy.html
+    notify: 
+      - restart apache
+
+  
