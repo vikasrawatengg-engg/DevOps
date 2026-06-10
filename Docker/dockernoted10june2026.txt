@@ -1,0 +1,96 @@
+1. Image Lifecycle & Management
+These commands deal with Docker Images—your read-only blueprints stored locally or on the cloud.
+
+docker pull <image_name>:<tag>
+What we did: docker pull ubuntu:latest and docker pull vikasrawatengg/ubuntu-test:latest
+
+What it does: Goes out to the internet (Docker Hub) and downloads the specified image template down to your local Amazon Linux server storage. If you don't specify a tag, it defaults to downloading :latest.
+
+docker images
+What we did: docker images
+
+What it does: Lists all the Docker images currently cached on your local system's hard drive. It shows you the repository name, tag, unique Image ID, creation date, and total size.
+
+docker tag <old_name> <new_name>
+What we did: docker tag ubuntu:latest vikasrawatengg/ubuntu-test:latest
+
+What it does: Creates a pointer alias (a new name tag) for an existing image. This is mandatory before pushing to Docker Hub, because the image name must start with your exact Docker Hub username so the cloud registry knows where to route it.
+
+docker build -t <name> .
+What we did: docker build -t my-first-web-app .
+
+What it does: Reads the step-by-step instructions inside your text-based Dockerfile in the current directory (represented by the dot .) and compiles them into a brand new, custom executable Docker image tagged with the name you chose (-t).
+
+2. Container Lifecycle & Execution
+These commands handle Docker Containers—the actual live, isolated, running process instances created from your images.
+
+docker run <flags> <image_name>
+What we did: * docker run -d -p 8080:80 --name running-web-container my-first-web-app
+
+docker run -it vikasrawatengg/ubuntu-test:latest bash
+
+What it does: Spawns a brand-new container from an image and starts executing it. It uses several critical flags:
+
+-d (Detached): Runs the container silently in the background, freeing up your terminal prompt.
+
+-p 8080:80 (Port Mapping): Links port 8080 on your host server to port 80 inside the container.
+
+-it (Interactive + TTY): Keeps an open input stream channel, allowing you to interact with the container's shell.
+
+--name: Assigns a clean, custom human-readable name instead of a random generated one.
+
+docker ps
+What we did: docker ps
+
+What it does: Shows a live status monitor table of all currently running containers on your system.
+
+docker ps -a
+What we did: docker ps -a
+
+What it does: Lists all containers on the machine, including those that are currently running, paused, or completely stopped/exited.
+
+docker logs <container_name>
+What we did: docker logs running-web-container
+
+What it does: Reaches inside an isolated container and prints out its internal standard output streams (like Apache boot logs or application traffic events) onto your screen.
+
+docker exec -it <container_name_or_id> <command>
+What we did: docker exec -it ddc1487fc120 bash
+
+What it does: Lets you step inside an already running container to execute a new process (like launching a bash shell prompt). This lets you test files and run diagnostic checks directly inside the isolated container environment.
+
+docker stop <container_name>
+What we did: docker stop running-web-container
+
+What it does: Gracefully shuts down the primary active process inside a running container, bringing it to an "Exited" state.
+
+docker start <container_name>
+What we did: docker start running-web-container
+
+What it does: Wakes up a previously stopped container, instantly resuming its operations without altering its internal files.
+
+3. Remote Cloud Integration
+These commands bridge your local machine to the global public cloud registries.
+
+docker login
+What we did: docker login
+
+What it does: Securely authenticates your local terminal session with the Docker Hub registry using your personal credentials (vikasrawatengg).
+
+docker push <username/image_name>:<tag>
+What we did: docker push vikasrawatengg/ubuntu-test:latest
+
+What it does: Uploads your locally built or tagged image layers over the network directly into your personal repository profile on Docker Hub.
+
+4. System Aggressive Cleanup
+These commands are used to recycle system storage and wipe the slate clean.
+
+docker rm -f <container_ids>
+What we did: docker rm -f $(docker ps -aq)
+
+What it does: Deletes containers from the system disk. The -f flag forces active running ones to stop first. Passing $(docker ps -aq) automatically gathers a clean list of every single container ID on the system and feeds it to the deletion engine at once.
+
+docker rmi <image_ids> -f
+What we did: docker rmi $(docker images -q) -f
+
+What it does: Removes images entirely from your local cache repository storage. Using $(docker images -q) collects all available local image IDs to purge them in a single command pass.
