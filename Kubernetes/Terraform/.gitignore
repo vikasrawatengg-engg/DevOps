@@ -1,0 +1,22 @@
+# Ignore the local terraform working directory containing binaries
+.terraform/
+
+# Ignore lock files if you don't want to track strict provider variations
+.terraform.lock.hcl
+
+# Ignore your local state files (which can contain sensitive backend/resource data)
+*.tfstate
+*.tfstate.*
+
+# Ignore variable files containing secrets
+*.tfvars
+*.tfvars.json
+
+# Block the entire local terraform cache directory completely
+.terraform/
+**/.terraform/
+.terraform/*
+
+# Explicitly block any nested .exe files just to be safe
+**/*.exe
+*.exe

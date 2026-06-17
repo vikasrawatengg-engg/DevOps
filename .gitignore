@@ -1,0 +1,18 @@
+# Ignore local Terraform execution caches and lock files
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Ignore your localized offline mirror configuration file
+config.tfrc
+
+# Ignore massive binary files or PDFs (like the cheat sheet from earlier)
+*.pdf
+*.zip
+*.tar.gz
+*.exe
+
+# Ignore OS-specific files
+Thumbs.db
+.DS_Store
