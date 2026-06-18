@@ -8,7 +8,6 @@
 config.tfrc
 
 # Ignore massive binary files or PDFs (like the cheat sheet from earlier)
-*.pdf
 *.zip
 *.tar.gz
 *.exe
