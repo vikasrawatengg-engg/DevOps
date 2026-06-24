@@ -1,0 +1,4 @@
+galaxy_info:
+   author: jatin
+   description: Ansible role to install and configure Apache web server
+   company: Jatin's Company

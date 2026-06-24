@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Tier 1: Frontend Web Engine
+  web-portal:
+    image: nginx:1.25-alpine
+    container_name: enterprise-nginx-frontend
+    restart: always
+    ports:
+      - "8090:80"
+    volumes:
+      - static-html-vault:/usr/share/nginx/html
+    networks:
+      - private-app-mesh
+    depends_on:
+      - db-engine
+
+  # Tier 2: Relational Database Storage Engine
+  db-engine:
+    image: mysql:8.0
+    container_name: enterprise-mysql-backend
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: CoreDatabaseSecureClusterPassword2026!
+      MYSQL_DATABASE: internal_corporate_erp
+      MYSQL_USER: vikas_devops_admin
+      MYSQL_PASSWORD: SecureAppUserAccessPass2026#
+    volumes:
+      - relational-data-vault:/var/lib/mysql
+    networks:
+      - private-app-mesh
+
+# Persistent Storage Declarations
+volumes:
+  static-html-vault:
+    driver: local
+  relational-data-vault:
+    driver: local
+
+# Isolated Inter-Container Communications Network Mesh
+networks:
+  private-app-mesh:
+    driver: bridge
