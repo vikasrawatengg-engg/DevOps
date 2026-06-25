@@ -1,0 +1,175 @@
+ASSIGNMENT 1 
+------------
+
+---
+- name: Install Java on Slave 1
+  hosts: slave1
+  become: yes
+
+  tasks:
+    - name: Install Java package
+      apt:
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
+
+- name: Install MySQL on Slave 2
+  hosts: slave2
+  become: yes
+
+  tasks:
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+
+
+
+ASSIGNMENT 2
+------------
+
+#!/bin/bash
+echo "This text has been added by custom script" >> /tmp/1.txt
+
+
+
+---
+- name: Run custom script on all hosts
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Copy script to remote nodes
+      copy:
+        src: add_text.sh
+        dest: /tmp/add_text.sh
+        mode: '0755'
+
+    - name: Execute the script
+      command: /tmp/add_text.sh
+
+
+
+ASSIGNMENT 3 
+-----------------
+
+-----APACHEROLE---------
+---
+- name: Install Apache2
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: Start Apache2 service
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+-----NGINXROLE--------
+
+---
+- name: Install NGINX
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Start NGINX service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+
+------MAINPLAYBOOK------------
+
+---
+- name: Install Apache on Slave1
+  hosts: slave1
+  become: yes
+  roles:
+    - apache_role
+
+- name: Install NGINX on Slave2
+  hosts: slave2
+  become: yes
+  roles:
+    - nginx_role
+
+
+
+ASSIGNMENT 4 
+------------------
+
+---
+- name: Install NGINX
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Copy custom index.html
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    mode: '0644'
+
+- name: Ensure NGINX is running
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+
+ASSIGNMENT 5 
+----------------
+
+------JAVAROLE-----------
+
+---
+- name: Install Java
+  apt:
+    name: openjdk-11-jdk
+    state: present
+    update_cache: yes
+
+
+--------MYSQLROLE-------------
+
+
+---
+- name: Install MySQL Server
+  apt:
+    name: mysql-server
+    state: present
+    update_cache: yes
+
+- name: Start MySQL Service
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+
+-------MAINPLAYBOOK-----------
+
+---
+- name: Install Java on Test Nodes
+  hosts: test
+  become: yes
+  roles:
+    - java_role
+
+- name: Install MySQL on Prod Nodes
+  hosts: prod
+  become: yes
+  roles:
+    - mysql_role
+
+
+
+
+
