@@ -1,0 +1,17 @@
+# 1. Base Image Specification
+FROM ubuntu:latest
+
+# 2. Prevent interactive configuration prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 3. System Update and Apache2 Installation Layer (Fixed Syntax)
+RUN apt-get update && apt-get install -y \
+    apache2 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Port Documentation
+EXPOSE 80
+
+# 5. Native Executable Startup Instruction
+CMD ["apachectl", "-D", "FOREGROUND"]
