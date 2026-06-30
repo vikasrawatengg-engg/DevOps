@@ -15,7 +15,7 @@ resource "aws_security_group" "controller_sg" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Jenkins Web UI access
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -32,7 +32,6 @@ resource "aws_security_group" "k8s_sg" {
   description = "Allow internal K8s traffic and external NodePort"
   vpc_id      = aws_vpc.prod_vpc.id
 
-  # Internal cluster traffic (Full communication within security group)
   ingress {
     from_port   = 0
     to_port     = 0
@@ -40,7 +39,6 @@ resource "aws_security_group" "k8s_sg" {
     self        = true
   }
 
-  # SSH Access
   ingress {
     from_port   = 22
     to_port     = 22
@@ -48,7 +46,6 @@ resource "aws_security_group" "k8s_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # K8s API Server Access from Controller
   ingress {
     from_port       = 6443
     to_port         = 6443
@@ -56,12 +53,11 @@ resource "aws_security_group" "k8s_sg" {
     security_groups = [aws_security_group.controller_sg.id]
   }
 
-  # Target Capstone NodePort Assignment 
   ingress {
     from_port   = 30008
     to_port     = 30008
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -72,7 +68,6 @@ resource "aws_security_group" "k8s_sg" {
   }
 }
 
-# Data source to fetch latest Ubuntu 22.04 LTS AMI natively
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -89,10 +84,17 @@ data "aws_ami" "ubuntu" {
 # Machine 1: Controller / Jenkins Master
 resource "aws_instance" "controller" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type_controller
+  instance_type          = var.instance_type_micro
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.controller_sg.id]
   key_name               = var.key_name
+
+  root_block_device {
+    volume_size           = 20 # Strictly locked to 20 GiB maximum limit
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   tags = {
     Name = "Controller-Jenkins-Master"
   }
@@ -101,10 +103,17 @@ resource "aws_instance" "controller" {
 # Machine 2: Kubernetes Master
 resource "aws_instance" "k8s_master" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type_k8s
+  instance_type          = var.instance_type_micro
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.k8s_sg.id]
   key_name               = var.key_name
+
+  root_block_device {
+    volume_size           = 20 # Strictly locked to 20 GiB maximum limit
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   tags = {
     Name = "Kubernetes-Master"
   }
@@ -113,10 +122,17 @@ resource "aws_instance" "k8s_master" {
 # Machine 3: Kubernetes Worker 1
 resource "aws_instance" "k8s_worker1" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type_k8s
+  instance_type          = var.instance_type_micro
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.k8s_sg.id]
   key_name               = var.key_name
+
+  root_block_device {
+    volume_size           = 20 # Strictly locked to 20 GiB maximum limit
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   tags = {
     Name = "Kubernetes-Worker-1"
   }
@@ -125,10 +141,17 @@ resource "aws_instance" "k8s_worker1" {
 # Machine 4: Kubernetes Worker 2
 resource "aws_instance" "k8s_worker2" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type_k8s
+  instance_type          = var.instance_type_micro
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.k8s_sg.id]
   key_name               = var.key_name
+
+  root_block_device {
+    volume_size           = 20 # Strictly locked to 20 GiB maximum limit
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   tags = {
     Name = "Kubernetes-Worker-2"
   }
