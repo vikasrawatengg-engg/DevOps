@@ -1,0 +1,103 @@
+---
+# ==========================================
+# PHASE 2A: PROVISION JAVA & JENKINS
+# ==========================================
+- name: Configure Jenkins and Java Environment
+  hosts: jenkins_nodes
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Download Jenkins Repo Key
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+
+    - name: Add Jenkins Repository Link
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+        state: present
+
+    - name: Install Jenkins Server Engine
+      apt:
+        name: jenkins
+        state: present
+
+    - name: Ensure Jenkins is active and enabled
+      service:
+        name: jenkins
+        state: started
+        enabled: true
+
+# ==========================================
+# PHASE 2B: PROVISION DOCKER & KUBERNETES RUNTIMES
+# ==========================================
+- name: Configure Docker and Kubernetes Core Elements
+  hosts: k8s_master_node, k8s_worker_nodes
+  become: true
+  tasks:
+    - name: Install prerequisite networking packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg
+
+    - name: Install Docker Container Runtime Engine
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Enable Docker Service daemon
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Disable Swap memory system-wide
+      command: swapoff -a
+
+    - name: Remove swap entry from fstab mapping
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+.*)$'
+        replace: '# \1'
+
+    - name: Create Kubernetes keyring path directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Fetch Kubernetes signing public key
+      get_url:
+        url: https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
+        dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add Kubernetes Stable Repository Array
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
+        state: present
+
+    - name: Update apt repository array indices
+      apt:
+        update_cache: yes
+
+    - name: Install Kubelet, Kubeadm, and Kubectl binaries
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl

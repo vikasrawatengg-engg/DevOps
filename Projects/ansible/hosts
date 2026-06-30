@@ -1,0 +1,9 @@
+[jenkins_nodes]
+worker1_jenkins ansible_host=13.234.120.32 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/capstone-prod-key.pem
+
+[k8s_master_node]
+k8s_master ansible_host=35.154.238.212 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/capstone-prod-key.pem
+
+[k8s_worker_nodes]
+k8s_worker1 ansible_host=52.66.191.170 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/capstone-prod-key.pem
+k8s_worker2 ansible_host=35.154.250.197 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/capstone-prod-key.pem
