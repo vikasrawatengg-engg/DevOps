@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_USER     = "vikasrawatengg" 
+        REGISTRY_IMAGE  = "vikasrawatengg/custom-analytics-web"
+        K8S_MASTER_IP   = "3.111.219.168"
+    }
+    stages {
+        stage('Pull Source Code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/hshar/website.git'
+                sh '''
+                echo "FROM hshar/webapp:latest" > Dockerfile
+                echo "COPY . /var/www/html/" >> Dockerfile
+                echo "EXPOSE 80" >> Dockerfile
+                echo "CMD [\\"apache2ctl\\", \\"-D\\", \\"FOREGROUND\\"]" >> Dockerfile
+                '''
+            }
+        }
+        stage('Build Custom Container') {
+            steps {
+                sh 'docker build -t ${REGISTRY_IMAGE}:${BUILD_NUMBER} .'
+                sh 'docker tag ${REGISTRY_IMAGE}:${BUILD_NUMBER} ${REGISTRY_IMAGE}:latest'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh 'echo $PASS | docker login -u ${DOCKER_USER} --password-stdin'
+                    sh 'docker push ${REGISTRY_IMAGE}:${BUILD_NUMBER}'
+                    sh 'docker push ${REGISTRY_IMAGE}:latest'
+                }
+            }
+        }
+        stage('Deploy to Kubernetes Cluster') {
+            steps {
+                // Extracts your key as a direct temporary file variable ($KEY) instead of trying to pass it to ssh-add
+                withCredentials([sshUserPrivateKey(credentialsId: 'k8s-ssh-key-credentials', keyFileVariable: 'KEY')]) {
+                    echo '=== CONNECTING TO KUBERNETES MASTER VIA NATIVE SSH ==='
+                    sh "ssh -i \${KEY} -o StrictHostKeyChecking=no ubuntu@${K8S_MASTER_IP} 'kubectl apply -f app-deployment.yaml && kubectl apply -f app-service.yaml'"
+                    sh "ssh -i \${KEY} -o StrictHostKeyChecking=no ubuntu@${K8S_MASTER_IP} 'kubectl rollout restart deployment/analytics-prod-app'"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-prod-app
+  labels:
+    app: analytics
+spec:
+  replicas: 2  # Strict project replica specification
+  selector:
+    matchLabels:
+      app: analytics
+  template:
+    metadata:
+      labels:
+        app: analytics
+    spec:
+      containers:
+      - name: web-app
+        image: vikasrawat/custom-analytics-web:latest # Your future Docker Hub path
+        ports:
+        - containerPort: 80
