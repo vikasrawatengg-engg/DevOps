@@ -1,0 +1,3 @@
+JSON that you need to copy: 
+ 
+{     "policyRule": {         "if": {             "allOf": [{                     "field": "type",                     "equals": "Microsoft.Compute/virtualMachines"                 },                 {                     "field": "Microsoft.Compute/virtualMachines/sku.name",                     "like": "Standard_B*"                 }             ]         },         "then": {             "effect": "deny"         }     } } 

@@ -1,0 +1,13 @@
+Examples of Public Cloud:
+Amazon Elastic Compute Cloud (EC2), Microsoft Azure, IBM's Blue Cloud
+
+Examples of Private Cloud:
+Private Data Centers, Microsoft, Elastra-private cloud, and Ubuntu
+
+Examples of Hybrid Cloud:
+Bank which requires both Public and Private Cloud for their operations.
+
+Examples of Community Cloud:
+Our government organization within India may share computing infrastructure in the cloud to manage data. ...
+
+
